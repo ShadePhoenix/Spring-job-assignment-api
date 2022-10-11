@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.work.jobassignments.jobs.Job;
 
 @Entity
@@ -20,6 +21,8 @@ public class Temp {
     String lastName;
 
     @OneToMany(mappedBy = "temp", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Column(nullable = true)
+    @JsonManagedReference
     Set<Job> jobs;
 
     Temp() {

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.work.jobassignments.temps.Temp;
 
 @Entity
@@ -24,6 +25,7 @@ public class Job {
 
     @ManyToOne
     @JoinColumn(name = "temp_id", nullable = true)
+    @JsonBackReference
     private Temp temp;
 
     Job() {

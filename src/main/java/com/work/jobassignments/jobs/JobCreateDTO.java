@@ -22,16 +22,9 @@ public class JobCreateDTO {
     @Future
     LocalDate endDate;
 
-    Long tempId;
-
-    // public JobCreateDTO(@NotBlank String name, @NotNull @FutureOrPresent Date
-    // startDate,
-    // @NotNull @Future Date endDate) {
-    // super();
-    // this.name = name;
-    // this.startDate = startDate;
-    // this.endDate = endDate;
-    // }
+    @Nullable
+    @PositiveOrZero
+    Long tempId = null;
 
     public JobCreateDTO(@NotBlank String name, @NotNull @FutureOrPresent LocalDate startDate,
             @NotNull @Future LocalDate endDate, @Nullable @PositiveOrZero Long tempId) {

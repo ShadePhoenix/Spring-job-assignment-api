@@ -27,8 +27,6 @@ public class JobController {
 
     @PostMapping
     public ResponseEntity<Job> create(@Valid @RequestBody JobCreateDTO data) {
-        // if (data.getEndDate().before(data.getStartDate()))
-        // return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         Job createdJob = this.service.create(data);
         return new ResponseEntity<>(createdJob, HttpStatus.CREATED);
     }

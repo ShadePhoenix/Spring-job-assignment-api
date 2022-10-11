@@ -21,11 +21,16 @@ public class JobService {
     private TempRepository tempRepository;
 
     public Job create(JobCreateDTO data) {
-        String cName = data.getName().trim();
-        Optional<Temp> temp = tempRepository.findById(data.getTempId());
+        Job newJob = new Job();
+        newJob.setName(data.getName().trim());
 
-        Job newJob = temp.isPresent() ? new Job(cName, data.getStartDate(), data.getEndDate(), temp.get())
-                : new Job(cName, data.getStartDate(), data.getEndDate());
+        if (data.getTempId() != null) {
+            Optional<Temp> temp = tempRepository.findById(data.getTempId());
+            if (temp.isEmpty()) {
+                // Throw exception since a temp could not be found.
+            }
+        }
+
         // Job newJob = new Job(cName, data.getStartDate(), data.getEndDate());
         this.repository.save(newJob);
         return newJob;
