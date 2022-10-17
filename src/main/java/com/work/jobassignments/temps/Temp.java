@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.work.jobassignments.jobs.Job;
 
@@ -12,18 +13,19 @@ import com.work.jobassignments.jobs.Job;
 public class Temp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column
-    String firstName;
+    private String firstName;
 
     @Column
-    String lastName;
+    private String lastName;
 
     @OneToMany(mappedBy = "temp", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Column(nullable = true)
     @JsonManagedReference
-    Set<Job> jobs;
+    @JsonIgnoreProperties({ "temp" })
+    private Set<Job> jobs;
 
     Temp() {
     }
@@ -31,6 +33,10 @@ public class Temp {
     public Temp(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getFirstName() {

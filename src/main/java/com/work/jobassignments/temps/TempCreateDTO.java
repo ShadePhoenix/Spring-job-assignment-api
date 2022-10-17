@@ -4,10 +4,10 @@ import javax.validation.constraints.NotBlank;
 
 public class TempCreateDTO {
     @NotBlank
-    String firstName;
+    private String firstName;
 
     @NotBlank
-    String lastName;
+    private String lastName;
 
     public TempCreateDTO(@NotBlank String firstName, @NotBlank String lastName) {
         this.firstName = firstName;

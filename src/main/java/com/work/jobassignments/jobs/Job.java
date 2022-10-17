@@ -4,7 +4,8 @@ import java.time.LocalDate;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.work.jobassignments.temps.Temp;
 
 @Entity
@@ -24,8 +25,9 @@ public class Job {
     private LocalDate endDate;
 
     @ManyToOne
-    @JoinColumn(name = "temp_id", nullable = true)
-    @JsonBackReference
+    @JoinColumn(name = "temp", nullable = true)
+    @JsonManagedReference
+    @JsonIgnoreProperties({ "jobs" })
     private Temp temp;
 
     Job() {
@@ -46,6 +48,10 @@ public class Job {
         this.startDate = startDate;
         this.endDate = endDate;
         this.temp = temp;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
@@ -70,5 +76,13 @@ public class Job {
 
     public void setEndDate(LocalDate date) {
         this.endDate = date;
+    }
+
+    public Temp getTemp() {
+        return temp;
+    }
+
+    public void setTemp(Temp temp) {
+        this.temp = temp;
     }
 }

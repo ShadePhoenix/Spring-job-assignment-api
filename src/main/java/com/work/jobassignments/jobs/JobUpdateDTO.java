@@ -4,30 +4,22 @@ import java.time.LocalDate;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
-import org.springframework.lang.Nullable;
-
-public class JobCreateDTO {
-    @NotBlank
+public class JobUpdateDTO {
     private String name;
 
-    @NotNull
     @FutureOrPresent
     private LocalDate startDate;
 
-    @NotNull
     @Future
     private LocalDate endDate;
 
-    @Nullable
     @PositiveOrZero
-    private Long tempId = null;
+    private Long tempId;
 
-    public JobCreateDTO(@NotBlank String name, @NotNull @FutureOrPresent LocalDate startDate,
-            @NotNull @Future LocalDate endDate, @Nullable @PositiveOrZero Long tempId) {
+    public JobUpdateDTO(String name, @FutureOrPresent LocalDate startDate, @Future LocalDate endDate,
+            @PositiveOrZero Long tempId) {
         super();
         this.name = name;
         this.startDate = startDate;
@@ -36,7 +28,7 @@ public class JobCreateDTO {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -44,7 +36,7 @@ public class JobCreateDTO {
     }
 
     public LocalDate getStartDate() {
-        return this.startDate;
+        return startDate;
     }
 
     public void setStartDate(LocalDate date) {

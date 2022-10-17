@@ -1,12 +1,13 @@
 package com.work.jobassignments.temps;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.work.jobassignments.exceptions.TempNotFoundException;
 
 @Service
 @Transactional
@@ -26,7 +27,7 @@ public class TempService {
         return this.repository.findAll();
     }
 
-    public Optional<Temp> find(Long id) {
-        return this.repository.findById(id);
+    public Temp one(Long id) {
+        return this.repository.findById(id).orElseThrow(() -> new TempNotFoundException(id));
     }
 }
