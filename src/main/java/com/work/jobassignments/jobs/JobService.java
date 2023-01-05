@@ -1,5 +1,6 @@
 package com.work.jobassignments.jobs;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -33,13 +34,8 @@ public class JobService {
             temp = tempRepository.findById(data.getTempId())
                     .orElseThrow(() -> new TempNotFoundException(data.getTempId()));
             List<Job> tempJobs = this.repository.findByTempIs(temp.getId());
-            boolean validDate = tempJobs.stream().allMatch((Job job) -> {
-                boolean before = data.getStartDate().isBefore(job.getStartDate())
-                        && data.getEndDate().isBefore(job.getStartDate());
-                boolean after = data.getStartDate().isAfter(job.getEndDate())
-                        && data.getEndDate().isAfter(job.getEndDate());
-                return before || after;
-            });
+            boolean validDate = tempJobs.stream()
+                    .allMatch((Job job) -> dateValidate(data.getStartDate(), data.getEndDate(), job));
             if (!validDate)
                 throw new JobDateNotValidException("Job dates conflict with the Temps currently assigned Job");
         }
@@ -61,13 +57,8 @@ public class JobService {
         if (data.getTempId() != null) {
             Temp temp = this.tempRepository.findById(data.getTempId()).orElseThrow(() -> new TempNotFoundException(id));
             List<Job> tempJobs = this.repository.findByTempIs(temp.getId());
-            boolean validDate = tempJobs.stream().allMatch((Job job) -> {
-                boolean before = data.getStartDate().isBefore(job.getStartDate())
-                        && data.getEndDate().isBefore(job.getStartDate());
-                boolean after = data.getStartDate().isAfter(job.getEndDate())
-                        && data.getEndDate().isAfter(job.getEndDate());
-                return before || after;
-            });
+            boolean validDate = tempJobs.stream()
+                    .allMatch((Job job) -> dateValidate(data.getStartDate(), data.getEndDate(), job));
             if (updateJob.getStartDate().isAfter(updateJob.getEndDate()))
                 throw new JobDateNotValidException();
             if (!validDate)
@@ -76,6 +67,14 @@ public class JobService {
         }
         this.repository.save(updateJob);
         return updateJob;
+    }
+
+    private Boolean dateValidate(LocalDate startDate, LocalDate endDate, Job x) {
+        boolean before = startDate.isBefore(x.getStartDate())
+                && endDate.isBefore(x.getStartDate());
+        boolean after = startDate.isAfter(x.getEndDate())
+                && endDate.isAfter(x.getEndDate());
+        return before || after;
     }
 
     public List<Job> all() {
